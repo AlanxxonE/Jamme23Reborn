@@ -14,6 +14,9 @@ namespace Scripts.Player
         //Rigidbody
         Rigidbody rb;
 
+        [SerializeField]
+        ParticleSystem particles;
+
         //Camera
         Camera cam;
         [SerializeField, Range(0, 100)]
@@ -87,6 +90,18 @@ namespace Scripts.Player
             float turnAmount = context.ReadValue<Vector2>().x * mouseSensitivity;
             transform.Rotate(0, turnAmount, 0);
             RB.transform.forward= transform.forward;
+        }
+
+        public void Fire(InputAction.CallbackContext context)
+        {
+            if(context.performed)
+            {
+                particles.Play();
+            }
+            else if (context.canceled)
+            {
+                particles.Stop();
+            }
         }
 
         public void RigidbodyConstraints()
