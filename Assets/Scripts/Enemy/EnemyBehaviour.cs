@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-    private enum EnemyType
+    public enum EnemyType
     {
         SplashEnemy,
         CoolEnemy
     }
 
-    [SerializeField]
-    private EnemyType currentEnemyType;
+    public EnemyType currentEnemyType;
 
     private Transform targetToChase;
 
@@ -22,9 +21,9 @@ public class EnemyBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemySpeed = 2;
+        enemySpeed = 0.2f;
 
-        AssignEnemyToTarget(this.transform);
+        DirectionToFollow();
     }
 
     // Update is called once per frame
@@ -33,14 +32,19 @@ public class EnemyBehaviour : MonoBehaviour
         AssignMovementBasedOnEnemyType();
     }
 
-    void AssignEnemyToTarget(Transform targetToAssign)
+    public void AssignEnemyToTarget(Transform targetToAssign)
     {
         targetToChase = targetToAssign;
     }
 
+    public void AdaptEnemyType(EnemyType enemyType)
+    {
+        currentEnemyType = enemyType;
+    }
+
     void DirectionToFollow()
     {
-        directionTowardsTarget = this.transform.position - targetToChase.transform.position;
+        directionTowardsTarget = targetToChase.transform.position - this.transform.position;
     }
 
     void AssignMovementBasedOnEnemyType()
@@ -48,7 +52,8 @@ public class EnemyBehaviour : MonoBehaviour
         switch(currentEnemyType)
         {
             case EnemyType.SplashEnemy:
-                this.transform.Translate(directionTowardsTarget * enemySpeed);
+                DirectionToFollow();
+                this.transform.Translate(directionTowardsTarget * enemySpeed *Time.deltaTime);
                 break;
         }
     }
