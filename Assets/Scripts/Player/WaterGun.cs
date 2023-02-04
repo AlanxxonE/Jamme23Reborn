@@ -27,17 +27,11 @@ namespace Scripts.Player
         {
             var EnemyHealth = other.GetComponent<EnemyHealth>();
 
-            if (EnemyHealth)
-            {
-                Debug.Log("enemy");
-            }
-            else
-            {
-                Debug.Log("Fail");
-            }
+
             int numCollisionEvents = particles.GetCollisionEvents(other, collisionEvents);
 
-            Rigidbody rb = other.GetComponentInChildren<Rigidbody>();
+            Rigidbody rb = other.GetComponent<Rigidbody>();
+
             int i = 0;
 
             while (i < numCollisionEvents)
