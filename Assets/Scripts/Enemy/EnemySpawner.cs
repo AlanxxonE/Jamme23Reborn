@@ -17,6 +17,8 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         InvokeRepeating("GenerateEnemiesBasedOnSpawnAndTargetLocations", 0, 2f);
+        InvokeRepeating("GenerateEnemiesBasedOnSpawnAndTargetLocations", 0, 2f);
+        InvokeRepeating("GenerateEnemiesBasedOnSpawnAndTargetLocations", 0, 2f);
     }
 
     void GenerateEnemiesBasedOnSpawnAndTargetLocations()

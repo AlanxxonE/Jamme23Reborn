@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyBehaviour : MonoBehaviour
 {
@@ -18,17 +19,17 @@ public class EnemyBehaviour : MonoBehaviour
 
     private Vector3 directionTowardsTarget;
 
+    private NavMeshAgent agent;
+
     // Start is called before the first frame update
     void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
+
         enemySpeed = 0.2f;
 
         DirectionToFollow();
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
         AssignMovementBasedOnEnemyType();
     }
 
@@ -44,7 +45,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     void DirectionToFollow()
     {
-        directionTowardsTarget = targetToChase.transform.position - this.transform.position;
+        directionTowardsTarget = targetToChase.transform.position;
     }
 
     void AssignMovementBasedOnEnemyType()
@@ -52,8 +53,7 @@ public class EnemyBehaviour : MonoBehaviour
         switch(currentEnemyType)
         {
             case EnemyType.SplashEnemy:
-                DirectionToFollow();
-                this.transform.Translate(directionTowardsTarget * enemySpeed *Time.deltaTime);
+                agent.SetDestination(directionTowardsTarget);
                 break;
         }
     }
