@@ -1180,7 +1180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ef25192d6da1124aaa8a5607f9785c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  individualParticleForce: 0.1
+  individualParticleForce: 1
   individualParticleDamage: 0.1
 --- !u!198 &3934991807902685773
 ParticleSystem:
