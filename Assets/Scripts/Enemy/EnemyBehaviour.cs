@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(EnemyHealth))]
 public class EnemyBehaviour : MonoBehaviour
 {
     public enum EnemyType
