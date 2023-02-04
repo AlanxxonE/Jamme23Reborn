@@ -14,6 +14,7 @@ namespace Scripts.Player
         //Rigidbody
         Rigidbody rb;
 
+        //Particles
         [SerializeField]
         ParticleSystem particles;
 
