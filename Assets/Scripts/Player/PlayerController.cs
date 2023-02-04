@@ -4,14 +4,31 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.InputSystem;
 using UnityEditor.TerrainTools;
+using UnityEngine.WSA;
 
 namespace Scripts.Player
 {
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerController : MonoBehaviour
     {
+        //Rigidbody
         Rigidbody rb;
 
+        //Camera
+        Camera cam;
+        [SerializeField, Range(0, 100)]
+        private float mouseSensitivity;
+        private float cameraRotationY;
+        [SerializeField]
+        private float minRotationY = -90;
+        [SerializeField]
+        private float maxRotationY = 90;
+
+        [SerializeField]
+        [Range(0,100)]
+        private float movementSpeed = 1.0f;
+
+        #region Getters/Setters
         public Rigidbody RB
         {
             get
@@ -22,28 +39,60 @@ namespace Scripts.Player
                 }
                 return rb;
             }
+            set 
+            {
+                if (rb != null) return;
+                rb = value;
+            }
         }
+        #endregion
 
         private void Awake()
         {
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+            cam = Camera.main;
+            RB = GetComponent<Rigidbody>();
             RigidbodyConstraints();
         }
         private void Update()
         {
-            
+            RB.angularVelocity = Vector3.zero;
+        }
+        
+        public void Move(InputAction.CallbackContext context)
+        {
+            Vector2 movement = context.ReadValue<Vector2>();
+
+            float speedX = movement.x * movementSpeed;
+            float speedY = movement.y * movementSpeed;
+
+            Vector3 velocityX = speedX * transform.right;
+            Vector3 velocityY = speedY * transform.forward;
+
+            RB.velocity = velocityX + velocityY;
         }
 
-        
-        public void Move(float moveZ = 0, float moveX = 0)
+        public void Look(InputAction.CallbackContext context)
         {
-            
+            float lookAmount = context.ReadValue<Vector2>().y;
+
+            cameraRotationY -= lookAmount * mouseSensitivity;
+            cameraRotationY = Mathf.Clamp(cameraRotationY, minRotationY, maxRotationY);
+
+            cam.transform.localRotation = Quaternion.Euler(cameraRotationY, 0, 0);
+        }
+
+        public void Turn(InputAction.CallbackContext context)
+        {
+            float turnAmount = context.ReadValue<Vector2>().x * mouseSensitivity;
+            rb.transform.Rotate(0, turnAmount, 0);
         }
 
         public void RigidbodyConstraints()
         {
-            RB.constraints = UnityEngine.RigidbodyConstraints.FreezeRotationX;
-            RB.constraints = UnityEngine.RigidbodyConstraints.FreezeRotationZ;
-            RB.useGravity = false;
+            //RB.constraints = UnityEngine.RigidbodyConstraints.FreezeRotationX;
+            //RB.constraints = UnityEngine.RigidbodyConstraints.FreezeRotationZ;
+            //RB.useGravity = false;
         }
     }
 }

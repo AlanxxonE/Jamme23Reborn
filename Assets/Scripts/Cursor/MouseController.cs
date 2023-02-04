@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Scripts.Cursor
+namespace Scripts.Cursor2
 {
     public class MouseController : MonoBehaviour
     {
