@@ -8,7 +8,7 @@ using UnityEngine.WSA;
 
 namespace Scripts.Player
 {
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(PlayerInput))]
     public class PlayerController : MonoBehaviour
     {
         //Rigidbody
@@ -66,8 +66,8 @@ namespace Scripts.Player
             float speedX = movement.x * movementSpeed;
             float speedY = movement.y * movementSpeed;
 
-            Vector3 velocityX = speedX * transform.right;
-            Vector3 velocityY = speedY * transform.forward;
+            Vector3 velocityX = speedX * RB.transform.right;
+            Vector3 velocityY = speedY * RB.transform.forward;
 
             RB.velocity = velocityX + velocityY;
         }
@@ -85,7 +85,8 @@ namespace Scripts.Player
         public void Turn(InputAction.CallbackContext context)
         {
             float turnAmount = context.ReadValue<Vector2>().x * mouseSensitivity;
-            rb.transform.Rotate(0, turnAmount, 0);
+            transform.Rotate(0, turnAmount, 0);
+            RB.transform.forward= transform.forward;
         }
 
         public void RigidbodyConstraints()
