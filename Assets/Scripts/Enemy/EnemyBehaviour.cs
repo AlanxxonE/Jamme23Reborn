@@ -16,8 +16,6 @@ public class EnemyBehaviour : MonoBehaviour
 
     private Transform targetToChase;
 
-    private float enemySpeed;
-
     private Vector3 directionTowardsTarget;
 
     private NavMeshAgent agent;
@@ -30,8 +28,6 @@ public class EnemyBehaviour : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
-        enemySpeed = 0.2f;
 
         DirectionToFollow();
 
@@ -67,5 +63,13 @@ public class EnemyBehaviour : MonoBehaviour
     {
         agent.enabled = false;
         //Insert animation here
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.GetComponent<ToothBehaviour>() != null)
+        {
+            collision.gameObject.GetComponent<ToothBehaviour>().CheckForToothCollisionBasedOnType(ToothBehaviour.ToothInteraction.EnemyToothInteraction);
+        }
     }
 }
