@@ -65,7 +65,15 @@ namespace Scripts.Player
             //RB.angularVelocity = Vector3.zero;
             HandleMovement();
         }
-        
+
+        private void LateUpdate()
+        {
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                UnityEngine.Cursor.lockState = CursorLockMode.None;
+                FindObjectOfType<LevelManager>().LoadSceneByIndex(0);
+            }
+        }
         public void Move(InputAction.CallbackContext context)
         {
             movement = context.ReadValue<Vector2>();
