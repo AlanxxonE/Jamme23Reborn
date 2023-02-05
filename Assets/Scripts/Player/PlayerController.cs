@@ -28,9 +28,11 @@ namespace Scripts.Player
         [SerializeField]
         private float maxRotationY = 90;
 
+        //Movement
         [SerializeField]
         [Range(0,100)]
         private float movementSpeed = 1.0f;
+        Vector2 movement = new Vector2(0,0);
 
         #region Getters/Setters
         public Rigidbody RB
@@ -58,15 +60,19 @@ namespace Scripts.Player
             RB = GetComponent<Rigidbody>();
             RigidbodyConstraints();
         }
-        private void Update()
+        private void FixedUpdate()
         {
-            RB.angularVelocity = Vector3.zero;
+            //RB.angularVelocity = Vector3.zero;
+            HandleMovement();
         }
         
         public void Move(InputAction.CallbackContext context)
         {
-            Vector2 movement = context.ReadValue<Vector2>();
+            movement = context.ReadValue<Vector2>();
+        }
 
+        private void HandleMovement()
+        {
             float speedX = movement.x * movementSpeed;
             float speedY = movement.y * movementSpeed;
 
