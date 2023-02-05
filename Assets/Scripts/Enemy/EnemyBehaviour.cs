@@ -22,6 +22,10 @@ public class EnemyBehaviour : MonoBehaviour
 
     private NavMeshAgent agent;
 
+    private void OnEnable()
+    {
+        GetComponent<EnemyHealth>().EnemyBehaviour = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -57,5 +61,11 @@ public class EnemyBehaviour : MonoBehaviour
                 agent.SetDestination(directionTowardsTarget);
                 break;
         }
+    }
+
+    public void Dead()
+    {
+        agent.enabled = false;
+        //Insert animation here
     }
 }

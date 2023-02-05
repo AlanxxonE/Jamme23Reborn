@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     private float health = 100f;
-
+    public EnemyBehaviour EnemyBehaviour { get; set; }
     private float Health
     {
         get 
@@ -24,7 +24,7 @@ public class EnemyHealth : MonoBehaviour
         Health -= damage;
         if(Health <= 0)
         {
-            Debug.Log("Dead");
+            EnemyBehaviour.Dead();
         }
     }
 }
