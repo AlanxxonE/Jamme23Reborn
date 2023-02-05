@@ -546,6 +546,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentEnemyType: 0
+--- !u!114 &97946216 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3934991806231777471, guid: 77040b67d3fe5ae43b8b45922adbf1d7, type: 3}
+  m_PrefabInstance: {fileID: 3934991806685757595}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 718a1ff15c03eb8409d0d4dbaf0040c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &110743272
 GameObject:
   m_ObjectHideFlags: 0
@@ -5214,6 +5225,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3934991806231777459, guid: 77040b67d3fe5ae43b8b45922adbf1d7, type: 3}
+      propertyPath: m_ControlsChangedEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3934991806231777459, guid: 77040b67d3fe5ae43b8b45922adbf1d7, type: 3}
+      propertyPath: m_ControlsChangedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3934991806231777459, guid: 77040b67d3fe5ae43b8b45922adbf1d7, type: 3}
+      propertyPath: m_ControlsChangedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3934991806231777459, guid: 77040b67d3fe5ae43b8b45922adbf1d7, type: 3}
+      propertyPath: m_ControlsChangedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3934991806231777459, guid: 77040b67d3fe5ae43b8b45922adbf1d7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 97946216}
+    - target: {fileID: 3934991806231777459, guid: 77040b67d3fe5ae43b8b45922adbf1d7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3934991806231777459, guid: 77040b67d3fe5ae43b8b45922adbf1d7, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Move
+      objectReference: {fileID: 0}
+    - target: {fileID: 3934991806231777466, guid: 77040b67d3fe5ae43b8b45922adbf1d7, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
     - target: {fileID: 3934991806231777467, guid: 77040b67d3fe5ae43b8b45922adbf1d7, type: 3}
       propertyPath: m_Name
       value: Harold The Test Dummy
@@ -5260,6 +5303,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3934991806231777468, guid: 77040b67d3fe5ae43b8b45922adbf1d7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3934991807902685773, guid: 77040b67d3fe5ae43b8b45922adbf1d7, type: 3}
+      propertyPath: InheritVelocityModule.enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
