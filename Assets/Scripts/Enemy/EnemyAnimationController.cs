@@ -73,6 +73,5 @@ public class EnemyAnimationController : MonoBehaviour
             }
             anim.SetInteger("view", 2);                 //side
         }
-
     }
 }
