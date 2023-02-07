@@ -72,4 +72,5 @@ public class EnemyBehaviour : MonoBehaviour
             collision.gameObject.GetComponent<ToothBehaviour>().CheckForToothCollisionBasedOnType(ToothBehaviour.ToothInteraction.EnemyToothInteraction);
         }
     }
+
 }

@@ -13,17 +13,17 @@ namespace Scripts.Player
         ParticleSystem particles;
         private List<ParticleCollisionEvent> collisionEvents;
         [SerializeField]
-        private float individualParticleForce = 1f;
+        private float individualParticleForce = 5f;
 
         [SerializeField]
-        private float individualParticleDamage = 0.1f;
+        private float individualParticleDamage = 10f;
 
         private void Awake()
         {
             particles = GetComponent<ParticleSystem>();
             collisionEvents= new List<ParticleCollisionEvent>();
         }
-        void OnParticleCollision(GameObject other)
+        void OnParticleTrigger(GameObject other)
         {
             var EnemyHealth = other.GetComponent<EnemyHealth>();
 
