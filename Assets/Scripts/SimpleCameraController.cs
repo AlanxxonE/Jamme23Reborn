@@ -1,5 +1,7 @@
 #if ENABLE_INPUT_SYSTEM
+
 using UnityEngine.InputSystem;
+
 #endif
 
 using UnityEngine;
@@ -8,7 +10,7 @@ namespace UnityTemplateProjects
 {
     public class SimpleCameraController : MonoBehaviour
     {
-        class CameraState
+        private class CameraState
         {
             public float yaw;
             public float pitch;
@@ -54,10 +56,9 @@ namespace UnityTemplateProjects
             }
         }
 
-        const float k_MouseSensitivityMultiplier = 0.01f;
-
-        CameraState m_TargetCameraState = new CameraState();
-        CameraState m_InterpolatingCameraState = new CameraState();
+        private const float k_MouseSensitivityMultiplier = 0.01f;
+        private readonly CameraState m_TargetCameraState = new();
+        private readonly CameraState m_InterpolatingCameraState = new();
 
         [Header("Movement Settings")]
         [Tooltip("Exponential boost factor on translation, controllable by mouse wheel.")]
@@ -71,7 +72,7 @@ namespace UnityTemplateProjects
         public float mouseSensitivity = 60.0f;
 
         [Tooltip("X = Change in mouse position.\nY = Multiplicative factor for camera rotation.")]
-        public AnimationCurve mouseSensitivityCurve = new AnimationCurve(new Keyframe(0f, 0.5f, 0f, 5f), new Keyframe(1f, 2.5f, 0f, 0f));
+        public AnimationCurve mouseSensitivityCurve = new(new Keyframe(0f, 0.5f, 0f, 5f), new Keyframe(1f, 2.5f, 0f, 0f));
 
         [Tooltip("Time it takes to interpolate camera rotation 99% of the way to the target."), Range(0.001f, 1f)]
         public float rotationLerpTime = 0.01f;
@@ -80,13 +81,13 @@ namespace UnityTemplateProjects
         public bool invertY = false;
 
 #if ENABLE_INPUT_SYSTEM
-        InputAction movementAction;
-        InputAction verticalMovementAction;
-        InputAction lookAction;
-        InputAction boostFactorAction;
-        bool        mouseRightButtonPressed;
+        private InputAction movementAction;
+        private InputAction verticalMovementAction;
+        private InputAction lookAction;
+        private InputAction boostFactorAction;
+        private readonly bool mouseRightButtonPressed;
 
-        void Start()
+        private void Start()
         {
             var map = new InputActionMap("Simple Camera Controller");
 
@@ -122,13 +123,13 @@ namespace UnityTemplateProjects
 
 #endif
 
-        void OnEnable()
+        private void OnEnable()
         {
             m_TargetCameraState.SetFromTransform(transform);
             m_InterpolatingCameraState.SetFromTransform(transform);
         }
 
-        Vector3 GetInputTranslationDirection()
+        private Vector3 GetInputTranslationDirection()
         {
             Vector3 direction = Vector3.zero;
 #if ENABLE_INPUT_SYSTEM
@@ -165,7 +166,7 @@ namespace UnityTemplateProjects
             return direction;
         }
 
-        void Update()
+        private void Update()
         {
             // Exit Sample
 
@@ -193,7 +194,7 @@ namespace UnityTemplateProjects
             // Rotation
             if (IsCameraRotationAllowed())
             {
-                var mouseMovement = GetInputLookRotation() * k_MouseSensitivityMultiplier * mouseSensitivity;
+                var mouseMovement = k_MouseSensitivityMultiplier * mouseSensitivity * GetInputLookRotation();
                 if (invertY)
                     mouseMovement.y = -mouseMovement.y;
 
@@ -227,7 +228,7 @@ namespace UnityTemplateProjects
             m_InterpolatingCameraState.UpdateTransform(transform);
         }
 
-        float GetBoostFactor()
+        private float GetBoostFactor()
         {
 #if ENABLE_INPUT_SYSTEM
             return boostFactorAction.ReadValue<Vector2>().y * 0.01f;
@@ -236,7 +237,7 @@ namespace UnityTemplateProjects
 #endif
         }
 
-        Vector2 GetInputLookRotation()
+        private Vector2 GetInputLookRotation()
         {
             // try to compensate the diff between the two input systems by multiplying with empirical values
 #if ENABLE_INPUT_SYSTEM
@@ -249,50 +250,50 @@ namespace UnityTemplateProjects
 #endif
         }
 
-        bool IsBoostPressed()
+        private bool IsBoostPressed()
         {
 #if ENABLE_INPUT_SYSTEM
-            bool boost = Keyboard.current != null ? Keyboard.current.leftShiftKey.isPressed : false;
-            boost |= Gamepad.current != null ? Gamepad.current.xButton.isPressed : false;
+            bool boost = Keyboard.current != null && Keyboard.current.leftShiftKey.isPressed;
+            boost |= Gamepad.current != null && Gamepad.current.xButton.isPressed;
             return boost;
 #else
             return Input.GetKey(KeyCode.LeftShift);
 #endif
         }
 
-        bool IsEscapePressed()
+        private bool IsEscapePressed()
         {
 #if ENABLE_INPUT_SYSTEM
-            return Keyboard.current != null ? Keyboard.current.escapeKey.isPressed : false;
+            return Keyboard.current != null && Keyboard.current.escapeKey.isPressed;
 #else
             return Input.GetKey(KeyCode.Escape);
 #endif
         }
 
-        bool IsCameraRotationAllowed()
+        private bool IsCameraRotationAllowed()
         {
 #if ENABLE_INPUT_SYSTEM
-            bool canRotate = Mouse.current != null ? Mouse.current.rightButton.isPressed : false;
-            canRotate |= Gamepad.current != null ? Gamepad.current.rightStick.ReadValue().magnitude > 0 : false;
+            bool canRotate = Mouse.current != null && Mouse.current.rightButton.isPressed;
+            canRotate |= Gamepad.current != null && Gamepad.current.rightStick.ReadValue().magnitude > 0;
             return canRotate;
 #else
             return Input.GetMouseButton(1);
 #endif
         }
 
-        bool IsRightMouseButtonDown()
+        private bool IsRightMouseButtonDown()
         {
 #if ENABLE_INPUT_SYSTEM
-            return Mouse.current != null ? Mouse.current.rightButton.isPressed : false;
+            return Mouse.current != null && Mouse.current.rightButton.isPressed;
 #else
             return Input.GetMouseButtonDown(1);
 #endif
         }
 
-        bool IsRightMouseButtonUp()
+        private bool IsRightMouseButtonUp()
         {
 #if ENABLE_INPUT_SYSTEM
-            return Mouse.current != null ? !Mouse.current.rightButton.isPressed : false;
+            return Mouse.current != null && !Mouse.current.rightButton.isPressed;
 #else
             return Input.GetMouseButtonUp(1);
 #endif

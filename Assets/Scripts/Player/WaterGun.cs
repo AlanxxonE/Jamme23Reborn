@@ -10,8 +10,9 @@ namespace Scripts.Player
 {
     public class WaterGun : MonoBehaviour
     {
-        ParticleSystem particles;
+        private ParticleSystem particles;
         private List<ParticleCollisionEvent> collisionEvents;
+
         [SerializeField]
         private float individualParticleForce = 5f;
 
@@ -21,31 +22,21 @@ namespace Scripts.Player
         private void Awake()
         {
             particles = GetComponent<ParticleSystem>();
-            collisionEvents= new List<ParticleCollisionEvent>();
+            collisionEvents = new List<ParticleCollisionEvent>();
         }
-        void OnParticleTrigger(GameObject other)
+
+        private void OnParticleCollision(GameObject other)
         {
-            var EnemyHealth = other.GetComponent<EnemyHealth>();
+            print(other.name);
 
-
-            int numCollisionEvents = particles.GetCollisionEvents(other, collisionEvents);
-
-            Rigidbody rb = other.GetComponent<Rigidbody>();
-
-            int i = 0;
-
-            while (i < numCollisionEvents)
+            if (other.name.Contains("Enemy"))
             {
-                if(EnemyHealth)
+                int numCollisionEvents = particles.GetCollisionEvents(other, collisionEvents);
+                var enemy = other.GetComponent<EnemyHealth>();
+                for (int i = 0; i < numCollisionEvents; i++)
                 {
-                    EnemyHealth.DealDamage(individualParticleDamage);
+                    enemy.DealDamage(individualParticleDamage);
                 }
-                if (rb)
-                {
-                    Vector3 force = collisionEvents[i].velocity * individualParticleForce;
-                    rb.AddForce(force);
-                }
-                i++;
             }
         }
     }

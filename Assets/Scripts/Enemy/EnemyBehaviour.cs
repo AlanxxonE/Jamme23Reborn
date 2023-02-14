@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -24,8 +22,9 @@ public class EnemyBehaviour : MonoBehaviour
     {
         GetComponent<EnemyHealth>().EnemyBehaviour = this;
     }
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
 
@@ -44,14 +43,14 @@ public class EnemyBehaviour : MonoBehaviour
         currentEnemyType = enemyType;
     }
 
-    void DirectionToFollow()
+    private void DirectionToFollow()
     {
         directionTowardsTarget = targetToChase.transform.position;
     }
 
-    void AssignMovementBasedOnEnemyType()
+    private void AssignMovementBasedOnEnemyType()
     {
-        switch(currentEnemyType)
+        switch (currentEnemyType)
         {
             case EnemyType.SplashEnemy:
                 agent.SetDestination(directionTowardsTarget);
@@ -62,15 +61,15 @@ public class EnemyBehaviour : MonoBehaviour
     public void Dead()
     {
         agent.enabled = false;
+        Destroy(gameObject);
         //Insert animation here
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.GetComponent<ToothBehaviour>() != null)
+        if (collision.gameObject.GetComponent<ToothBehaviour>() != null)
         {
             collision.gameObject.GetComponent<ToothBehaviour>().CheckForToothCollisionBasedOnType(ToothBehaviour.ToothInteraction.EnemyToothInteraction);
         }
     }
-
 }

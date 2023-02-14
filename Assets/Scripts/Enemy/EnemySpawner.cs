@@ -13,18 +13,23 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private GameObject enemyPrefab;
 
+    [SerializeField]
+    private int maxEnemies = 10;
+
+    [SerializeField]
     private int numberOfEnemiesToSpawn = 3;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        for(int i = 0; i < numberOfEnemiesToSpawn; i++)
+        for (int i = 0; i < numberOfEnemiesToSpawn; i++)
         {
-            InvokeRepeating("GenerateEnemiesBasedOnSpawnAndTargetLocations", 0, 2f);
+            //InvokeRepeating("GenerateEnemiesBasedOnSpawnAndTargetLocations", 0, 2f);
+            Invoke("GenerateEnemiesBasedOnSpawnAndTargetLocations", 1f);
         }
     }
 
-    void GenerateEnemiesBasedOnSpawnAndTargetLocations()
+    private void GenerateEnemiesBasedOnSpawnAndTargetLocations()
     {
         if (targetPointLocations.Count > 0 && spawnPointLocations.Count > 0)
         {

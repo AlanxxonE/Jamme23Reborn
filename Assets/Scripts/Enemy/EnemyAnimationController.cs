@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class EnemyAnimationController : MonoBehaviour
 {
-    enum EnemyState
+    private enum EnemyState
     {
         WALKING, HIT, EXPLODE, DIE
     };
 
-    EnemyState enemyState = EnemyState.WALKING;
+    private readonly EnemyState enemyState = EnemyState.WALKING;
     public Animator anim;
-    Transform playerTransform;
-
+    private readonly Transform playerTransform;
 
     public bool Walk()
     {
-        if(enemyState != EnemyState.EXPLODE || enemyState != EnemyState.DIE || enemyState != EnemyState.HIT)
+        if (enemyState != EnemyState.EXPLODE || enemyState != EnemyState.DIE || enemyState != EnemyState.HIT)
         {
             anim.SetInteger("State", 0);
             return true;
         }
         return false;
     }
+
     public bool Hit()
     {
         if (enemyState != EnemyState.EXPLODE || enemyState != EnemyState.DIE)
@@ -32,6 +32,7 @@ public class EnemyAnimationController : MonoBehaviour
         }
         return false;
     }
+
     public bool Explode()
     {
         if (enemyState != EnemyState.DIE)
@@ -41,9 +42,10 @@ public class EnemyAnimationController : MonoBehaviour
         }
         return false;
     }
+
     public void Die()
     {
-            anim.SetInteger("State", 3);
+        anim.SetInteger("State", 3);
     }
 
     private void LateUpdate()
@@ -59,7 +61,7 @@ public class EnemyAnimationController : MonoBehaviour
         {
             anim.SetInteger("view", 1);                 //back
         }
-        else 
+        else
         {
             if (angle < 0)
             {
@@ -73,6 +75,5 @@ public class EnemyAnimationController : MonoBehaviour
             }
             anim.SetInteger("view", 2);                 //side
         }
-
     }
 }
