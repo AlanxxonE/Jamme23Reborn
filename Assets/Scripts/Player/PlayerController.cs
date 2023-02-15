@@ -12,29 +12,35 @@ namespace Scripts.Player
     public class PlayerController : MonoBehaviour
     {
         //Rigidbody
-        Rigidbody rb;
+        private Rigidbody rb;
 
         //Particles
         [SerializeField]
-        ParticleSystem particles;
+        private ParticleSystem[] particles;
 
         //Camera
-        Camera cam;
+        private Camera cam;
+
         [SerializeField, Range(0, 100)]
         private float mouseSensitivity;
+
         private float cameraRotationY;
+
         [SerializeField]
         private float minRotationY = -90;
+
         [SerializeField]
         private float maxRotationY = 90;
 
         //Movement
         [SerializeField]
-        [Range(0,100)]
+        [Range(0, 100)]
         private float movementSpeed = 1.0f;
-        Vector2 movement = new Vector2(0,0);
+
+        private Vector2 movement = new Vector2(0, 0);
 
         #region Getters/Setters
+
         public Rigidbody RB
         {
             get
@@ -45,13 +51,14 @@ namespace Scripts.Player
                 }
                 return rb;
             }
-            set 
+            set
             {
                 if (rb != null) return;
                 rb = value;
             }
         }
-        #endregion
+
+        #endregion Getters/Setters
 
         private void Awake()
         {
@@ -60,6 +67,7 @@ namespace Scripts.Player
             RB = GetComponent<Rigidbody>();
             RigidbodyConstraints();
         }
+
         private void FixedUpdate()
         {
             //RB.angularVelocity = Vector3.zero;
@@ -74,6 +82,7 @@ namespace Scripts.Player
                 FindObjectOfType<LevelManager>().LoadSceneByIndex(0);
             }
         }
+
         public void Move(InputAction.CallbackContext context)
         {
             movement = context.ReadValue<Vector2>();
@@ -104,18 +113,24 @@ namespace Scripts.Player
         {
             float turnAmount = context.ReadValue<Vector2>().x * mouseSensitivity;
             transform.Rotate(0, turnAmount, 0);
-            RB.transform.forward= transform.forward;
+            RB.transform.forward = transform.forward;
         }
 
         public void Fire(InputAction.CallbackContext context)
         {
-            if(context.performed)
+            if (context.performed)
             {
-                particles.Play();
+                foreach (var particle in particles)
+                {
+                    particle.Play();
+                }
             }
             else if (context.canceled)
             {
-                particles.Stop();
+                foreach (var particle in particles)
+                {
+                    particle.Stop();
+                }
             }
         }
 

@@ -6,25 +6,32 @@ public class EnemyHealth : MonoBehaviour
 {
     private float health = 100f;
     public EnemyBehaviour EnemyBehaviour { get; set; }
+
     private float Health
     {
-        get 
+        get
         {
             return health;
         }
-        set 
+        set
         {
             health = value;
         }
     }
 
-
-    public void DealDamage(float damage = 0)
+    public void DealDamage(float damage)
     {
         Health -= damage;
-        if(Health <= 0)
+        if (Health <= 0)
         {
             EnemyBehaviour.Dead();
         }
+        else
+        {
+            EnemyBehaviour.ChangeMode(EnemyBehaviour.EnemyMode.Physic);
+            StartCoroutine(EnemyBehaviour.DoAfterDelay(1.5f, () => EnemyBehaviour.ChangeMode(EnemyBehaviour.EnemyMode.Agent)));
+        }
+
+        print(Health);
     }
 }
