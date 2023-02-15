@@ -33,9 +33,15 @@ namespace Scripts.Player
             {
                 int numCollisionEvents = particles.GetCollisionEvents(other, collisionEvents);
                 var enemy = other.GetComponent<EnemyHealth>();
+                var rb = other.GetComponent<Rigidbody>();
                 for (int i = 0; i < numCollisionEvents; i++)
                 {
                     enemy.DealDamage(individualParticleDamage);
+                    if (rb)
+                    {
+                        Vector3 force = collisionEvents[i].velocity * individualParticleForce;
+                        rb.AddForce(force);
+                    }
                 }
             }
         }

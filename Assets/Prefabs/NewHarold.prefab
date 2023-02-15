@@ -534,7 +534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ef25192d6da1124aaa8a5607f9785c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  individualParticleForce: 1
+  individualParticleForce: 100
   individualParticleDamage: 10
 --- !u!198 &729136043688919385
 ParticleSystem:
@@ -4137,7 +4137,7 @@ ParticleSystem:
     serializedVersion: 4
     type: 1
     collisionMode: 0
-    colliderForce: 100
+    colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 1
     multiplyColliderForceByCollisionAngle: 0
