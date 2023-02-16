@@ -42,6 +42,8 @@ public class EnemySpawner : MonoBehaviour
             enemyClone.AddComponent<EnemyBehaviour>().AssignEnemyToTarget(targetPointLocations[randTarget]);
 
             enemyClone.GetComponent<EnemyBehaviour>().AdaptEnemyType(EnemyBehaviour.EnemyType.SplashEnemy);
+
+            enemyClone.GetComponent<EnemyAnimationController>().FindPlayer();
         }
     }
 }
