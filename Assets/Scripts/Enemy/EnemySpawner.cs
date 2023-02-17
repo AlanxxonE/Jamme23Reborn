@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,8 +23,7 @@ public class EnemySpawner : MonoBehaviour
     {
         for (int i = 0; i < numberOfEnemiesToSpawn; i++)
         {
-            //InvokeRepeating("GenerateEnemiesBasedOnSpawnAndTargetLocations", 0, 2f);
-            Invoke("GenerateEnemiesBasedOnSpawnAndTargetLocations", 1f);
+            InvokeRepeating(nameof(GenerateEnemiesBasedOnSpawnAndTargetLocations), 0, 2f);
         }
     }
 
@@ -40,10 +38,6 @@ public class EnemySpawner : MonoBehaviour
             GameObject enemyClone = Instantiate(enemyPrefab, spawnPointLocations[randSpawn].position, Quaternion.identity);
 
             enemyClone.AddComponent<EnemyBehaviour>().AssignEnemyToTarget(targetPointLocations[randTarget]);
-
-            enemyClone.GetComponent<EnemyBehaviour>().AdaptEnemyType(EnemyBehaviour.EnemyType.SplashEnemy);
-
-            enemyClone.GetComponent<EnemyAnimationController>().FindPlayer();
         }
     }
 }

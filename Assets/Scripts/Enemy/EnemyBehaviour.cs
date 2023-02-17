@@ -6,29 +6,18 @@ using UnityEngine.AI;
 [RequireComponent(typeof(EnemyHealth))]
 public class EnemyBehaviour : MonoBehaviour
 {
-    public enum EnemyType
-    {
-        SplashEnemy,
-        CoolEnemy
-    }
-
     public enum EnemyMode
     {
         Agent,
         Physic
     }
 
-    public EnemyType currentEnemyType;
-
     private Transform targetToChase;
-
     private Vector3 directionTowardsTarget;
-
     private NavMeshAgent agent;
-
     private Collider col;
-
     private Rigidbody rb;
+    private EnemyAnimationController anim;
 
     [SerializeField]
     private float damageCoolDown = 3f;
@@ -38,12 +27,28 @@ public class EnemyBehaviour : MonoBehaviour
         GetComponent<EnemyHealth>().EnemyBehaviour = this;
     }
 
+    private void FixedUpdate()
+    {
+        if (rb)
+        {
+            anim.SetSpeed(agent.velocity.magnitude);
+        }
+        if (agent.isActiveAndEnabled)
+        {
+            if (agent.remainingDistance - agent.stoppingDistance <= 0.1)
+            {
+                anim.Explode();
+            }
+        }
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         col = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
+        anim = transform.GetComponent<EnemyAnimationController>();
 
         DirectionToFollow();
 
@@ -55,39 +60,22 @@ public class EnemyBehaviour : MonoBehaviour
         targetToChase = targetToAssign;
     }
 
-    public void AdaptEnemyType(EnemyType enemyType)
-    {
-        currentEnemyType = enemyType;
-    }
-
-    private void DirectionToFollow()
+    private Vector3 DirectionToFollow()
     {
         directionTowardsTarget = targetToChase.transform.position;
+        return directionTowardsTarget;
     }
 
     private void AssignMovementBasedOnEnemyType()
     {
-        switch (currentEnemyType)
-        {
-            case EnemyType.SplashEnemy:
-                agent.SetDestination(directionTowardsTarget);
-                break;
-        }
+        agent.SetDestination(DirectionToFollow());
     }
 
     public void Dead()
     {
-        agent.isStopped = true;
-        Destroy(gameObject);
+        //agent.isStopped = true;
+        anim.Die();
         //Insert animation here
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.GetComponent<ToothBehaviour>() != null)
-        {
-            collision.gameObject.GetComponent<ToothBehaviour>().CheckForToothCollisionBasedOnType(ToothBehaviour.ToothInteraction.EnemyToothInteraction);
-        }
     }
 
     public void ChangeMode(EnemyMode em)
@@ -98,28 +86,53 @@ public class EnemyBehaviour : MonoBehaviour
             case EnemyMode.Agent:
                 rb.isKinematic = true;
                 agent.enabled = true;
-                //agent.isStopped = false;
-                agent.SetDestination(directionTowardsTarget);
+                agent.isStopped = false;
+                agent.SetDestination(DirectionToFollow());
                 break;
 
             case EnemyMode.Physic:
-                //agent.isStopped = true;
+                agent.isStopped = true;
                 agent.enabled = false;
                 rb.isKinematic = false;
                 break;
         }
     }
 
+    public void RecoverFromHit()
+    {
+        ChangeMode(EnemyMode.Agent);
+        anim.Walk();
+    }
+
     public IEnumerator DoAfterDelay(float delaySeconds, Action thingToDo)
     {
         yield return new WaitForSeconds(delaySeconds);
-        if (rb.velocity.magnitude <= 0.1f)
+        thingToDo();
+    }
+
+    public IEnumerator DoWhenStopped(Action thingToDo)
+    {
+        while (rb.velocity.magnitude <= 0.1f)
         {
-            thingToDo();
+            yield return new WaitForSeconds(0.1f);
         }
-        else
+        thingToDo();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Tooth"))
         {
-            yield return new WaitForSeconds(0.5f);
         }
+    }
+
+    public void Hit()
+    {
+        ChangeMode(EnemyMode.Physic);
+        anim.Hit();
+        StartCoroutine(DoWhenStopped(() =>
+        {
+            RecoverFromHit();
+        }));
     }
 }
