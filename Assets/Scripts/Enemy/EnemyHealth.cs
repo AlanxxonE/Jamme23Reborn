@@ -28,8 +28,7 @@ public class EnemyHealth : MonoBehaviour
         }
         else
         {
-            EnemyBehaviour.ChangeMode(EnemyBehaviour.EnemyMode.Physic);
-            StartCoroutine(EnemyBehaviour.DoAfterDelay(1.5f, () => EnemyBehaviour.ChangeMode(EnemyBehaviour.EnemyMode.Agent)));
+            EnemyBehaviour.Hit();
         }
 
         print(Health);
